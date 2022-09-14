@@ -1,13 +1,14 @@
 package by.baragvit.otus.homework.utils;
 
 import com.opencsv.CSVReader;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import by.baragvit.otus.homework.exception.CsvFileException;
 
 import java.io.Reader;
 import java.util.List;
 
-@Service
+@Component
 public class CsvParser implements DataParser {
   @Override
   public List<String[]> getLines(Reader reader) {

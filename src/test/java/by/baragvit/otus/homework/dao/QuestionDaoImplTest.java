@@ -1,5 +1,6 @@
 package by.baragvit.otus.homework.dao;
 
+import by.baragvit.otus.homework.converter.CsvConverter;
 import by.baragvit.otus.homework.model.Question;
 import by.baragvit.otus.homework.utils.CsvParser;
 import by.baragvit.otus.homework.utils.FileReaderProvider;
@@ -13,6 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +24,8 @@ class QuestionDaoImplTest {
   private FileReaderProvider fileDataReader;
   @Mock
   private CsvParser csvParser;
+  @Spy
+  private CsvConverter csvConverter = new CsvConverter();
   @InjectMocks
   private QuestionDaoCsv questionDaoCsv;
 

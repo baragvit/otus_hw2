@@ -2,7 +2,6 @@ package by.baragvit.otus.homework.service;
 
 import by.baragvit.otus.homework.model.Answer;
 import by.baragvit.otus.homework.model.Question;
-import org.apache.commons.collections.functors.TruePredicate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import by.baragvit.otus.homework.model.VerifiedAnswer;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CliRunner extends Runner {
+public class SimpleRunner extends Runner {
   private final Writer writer;
   private final Reader reader;
   private final QuestionService questionService;
@@ -19,12 +18,12 @@ public class CliRunner extends Runner {
   private final GradeService gradeService;
   private final double passRate;
 
-  public CliRunner(Writer writer,
-                   Reader reader,
-                   QuestionService questionService,
-                   EvaluationService evaluationService,
-                   GradeService gradeService,
-                   @Value("${passRate}") double passRate) {
+  public SimpleRunner(Writer writer,
+                      Reader reader,
+                      QuestionService questionService,
+                      EvaluationService evaluationService,
+                      GradeService gradeService,
+                      @Value("${passRate}") double passRate) {
     this.writer = writer;
     this.reader = reader;
     this.questionService = questionService;

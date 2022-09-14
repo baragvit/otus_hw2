@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class RunnerTest {
   @Mock
-  CliWriter writer;
+  private CliWriter writer;
   @Mock
   private CliReader reader;
   @Mock
@@ -37,7 +37,7 @@ class RunnerTest {
     when(evaluationService.evaluate(answers)).thenReturn(List.of(verifiedAnswer));
     when(gradingService.hasPass(List.of(verifiedAnswer), 1d)).thenReturn(true);
 
-    new CliRunner(writer, reader, questionService, evaluationService, gradingService, 1d).run();
+    new SimpleRunner(writer, reader, questionService, evaluationService, gradingService, 1d).run();
 
     verify(writer).write("Hi, pls enter your surname and name: ");
     verify(questionService).getQuestions();
