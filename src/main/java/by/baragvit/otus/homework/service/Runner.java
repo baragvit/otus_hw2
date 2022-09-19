@@ -2,12 +2,13 @@ package by.baragvit.otus.homework.service;
 
 import by.baragvit.otus.homework.model.Answer;
 
+import by.baragvit.otus.homework.model.User;
 import java.util.List;
 
 public abstract class Runner {
   public void run() {
-    String userName = getUserName();
-    List<Answer> answers = getUserAnswers(userName);
+    User user = getUserName();
+    List<Answer> answers = getUserAnswers(user);
     boolean hasPass = getGrade(answers);
     printResult(hasPass);
   }
@@ -16,7 +17,7 @@ public abstract class Runner {
 
   protected abstract boolean getGrade(List<Answer> answers);
 
-  protected abstract List<Answer> getUserAnswers(String userName);
+  protected abstract List<Answer> getUserAnswers(User userName);
 
-  protected abstract String getUserName();
+  protected abstract User getUserName();
 }

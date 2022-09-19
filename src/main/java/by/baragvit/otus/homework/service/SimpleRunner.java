@@ -2,6 +2,7 @@ package by.baragvit.otus.homework.service;
 
 import by.baragvit.otus.homework.model.Answer;
 import by.baragvit.otus.homework.model.Question;
+import by.baragvit.otus.homework.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import by.baragvit.otus.homework.model.VerifiedAnswer;
@@ -48,8 +49,8 @@ public class SimpleRunner extends Runner {
   }
 
   @Override
-  protected List<Answer> getUserAnswers(String userName) {
-    writer.write(String.format("%s, please answer the following questions:\n", userName));
+  protected List<Answer> getUserAnswers(User user) {
+    writer.write(String.format("%s, please answer the following questions:\n", user.getFirstName()));
     List<Question> questions = questionService.getQuestions();
     List<Answer> answers = new ArrayList<>();
     for (Question question : questions) {
@@ -61,14 +62,15 @@ public class SimpleRunner extends Runner {
   }
 
   @Override
-  protected String getUserName() {
+  protected User getUserName() {
     writer.write("Hi, pls enter your surname and name: ");
     do{
-      String name =  reader.read();
-      if (name.split(" ").length < 2) {
+      String rawName =  reader.read();
+      String[] splittedName = rawName.split(" ");
+      if (splittedName.length < 2) {
         writer.write("Incorrect name, please, try again: ");
       } else {
-        return name;
+        return new User().setFirstName(splittedName[0]).setLastName(splittedName[1]);
       }
     }while(true);
   }

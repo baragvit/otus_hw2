@@ -1,14 +1,15 @@
 package by.baragvit.otus.homework.dao;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
 import by.baragvit.otus.homework.converter.CsvConverter;
-import by.baragvit.otus.homework.utils.DataParser;
+import by.baragvit.otus.homework.exception.ReaderException;
 import by.baragvit.otus.homework.model.Question;
+import by.baragvit.otus.homework.utils.DataParser;
 import by.baragvit.otus.homework.utils.ReaderProvider;
-
+import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
@@ -31,6 +32,11 @@ public class QuestionDaoCsv implements QuestionDao {
   public List<Question> getQuestions() {
     Reader dataReader = readerProvider.getDataReader(filePath);
     List<String[]> allRows = dataParser.getLines(dataReader);
+    try {
+      dataReader.close();
+    } catch (IOException e) {
+      throw new ReaderException(e);
+    }
     return csvConverter.convert(allRows);
   }
 }
