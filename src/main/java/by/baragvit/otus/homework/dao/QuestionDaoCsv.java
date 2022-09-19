@@ -1,12 +1,13 @@
 package by.baragvit.otus.homework.dao;
 
+import by.baragvit.otus.homework.converter.CsvConverter;
+import by.baragvit.otus.homework.model.Question;
+import by.baragvit.otus.homework.utils.DataParser;
+import by.baragvit.otus.homework.utils.ReaderProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import by.baragvit.otus.homework.converter.CsvConverter;
-import by.baragvit.otus.homework.utils.DataParser;
-import by.baragvit.otus.homework.model.Question;
-import by.baragvit.otus.homework.utils.ReaderProvider;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
@@ -29,8 +30,12 @@ public class QuestionDaoCsv implements QuestionDao {
 
   @Override
   public List<Question> getQuestions() {
-    Reader dataReader = readerProvider.getDataReader(filePath);
-    List<String[]> allRows = dataParser.getLines(dataReader);
+    List<String[]> allRows;
+    try (Reader dataReader = readerProvider.getDataReader(filePath)) {
+      allRows = dataParser.getLines(dataReader);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     return csvConverter.convert(allRows);
   }
 }
