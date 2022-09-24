@@ -1,2 +1,7 @@
-filePath: questions.csv
+questionFilesPath: questions
 passRate: 0.5
+locale: ru_RU
+
+spring:
+  messages:
+    basename: "i18n/appmessages"

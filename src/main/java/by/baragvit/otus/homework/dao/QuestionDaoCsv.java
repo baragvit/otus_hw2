@@ -5,11 +5,11 @@ import by.baragvit.otus.homework.model.Question;
 import by.baragvit.otus.homework.propertieds.ApplicationProps;
 import by.baragvit.otus.homework.utils.DataParser;
 import by.baragvit.otus.homework.utils.ReaderProvider;
-import org.springframework.stereotype.Repository;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.Locale;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
@@ -17,15 +17,17 @@ public class QuestionDaoCsv implements QuestionDao {
   private final DataParser dataParser;
   private final String filePath;
   private final CsvConverter csvConverter;
+  private final Locale locale;
 
   public QuestionDaoCsv(ApplicationProps applicationProps,
                         ReaderProvider readerProvider,
                         DataParser dataParser,
                         CsvConverter csvConverter) {
     this.readerProvider = readerProvider;
-    this.filePath = applicationProps.filePath();
     this.dataParser = dataParser;
     this.csvConverter = csvConverter;
+    this.locale = applicationProps.locale();
+    this.filePath = String.format("%s/questions_%s.csv", applicationProps.questionFilesPath(), locale.getLanguage());
   }
 
   @Override
