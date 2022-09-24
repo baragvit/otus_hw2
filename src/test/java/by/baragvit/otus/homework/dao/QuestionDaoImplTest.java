@@ -2,13 +2,12 @@ package by.baragvit.otus.homework.dao;
 
 import by.baragvit.otus.homework.converter.CsvConverter;
 import by.baragvit.otus.homework.model.Question;
-import by.baragvit.otus.homework.propertieds.ApplicationProps;
+import by.baragvit.otus.homework.service.FilePathProvider;
 import by.baragvit.otus.homework.utils.CsvParser;
 import by.baragvit.otus.homework.utils.ReaderProvider;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
@@ -28,17 +27,18 @@ class QuestionDaoImplTest {
   private CsvParser csvParser;
   @Spy
   private CsvConverter csvConverter = new CsvConverter();
+  @Mock
+  private FilePathProvider filePathProvider;
 
 
   @Test
   public void getQuestionsFromFile() {
-    ApplicationProps applicationProps = new ApplicationProps("test", 1d, Locale.getDefault());
     when(readerProvider.getDataReader(any())).thenReturn(new StringReader("some data"));
     String[] row = {"one", "two"};
     List<String[]> rows = new ArrayList<>();
     rows.add(row);
     when(csvParser.getLines(any())).thenReturn(rows);
-    QuestionDao questionDaoCsv = new QuestionDaoCsv(applicationProps, readerProvider, csvParser, csvConverter);
+    QuestionDao questionDaoCsv = new QuestionDaoCsv(filePathProvider, readerProvider, csvParser, csvConverter);
 
     List<Question> questions = questionDaoCsv.getQuestions();
 

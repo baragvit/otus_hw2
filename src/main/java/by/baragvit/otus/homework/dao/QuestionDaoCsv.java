@@ -2,7 +2,7 @@ package by.baragvit.otus.homework.dao;
 
 import by.baragvit.otus.homework.converter.CsvConverter;
 import by.baragvit.otus.homework.model.Question;
-import by.baragvit.otus.homework.propertieds.ApplicationProps;
+import by.baragvit.otus.homework.service.FilePathProvider;
 import by.baragvit.otus.homework.utils.DataParser;
 import by.baragvit.otus.homework.utils.ReaderProvider;
 import java.io.IOException;
@@ -12,20 +12,19 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
-  public static final String QUESTION_PATH_TEMPLATE = "%s/questions_%s.csv";
   private final ReaderProvider readerProvider;
   private final DataParser dataParser;
   private final String filePath;
   private final CsvConverter csvConverter;
 
-  public QuestionDaoCsv(ApplicationProps applicationProps,
+  public QuestionDaoCsv(FilePathProvider filePathProvider,
                         ReaderProvider readerProvider,
                         DataParser dataParser,
                         CsvConverter csvConverter) {
     this.readerProvider = readerProvider;
     this.dataParser = dataParser;
     this.csvConverter = csvConverter;
-    this.filePath = String.format(QUESTION_PATH_TEMPLATE, applicationProps.questionFilesPath(), applicationProps.locale().getLanguage());
+    this.filePath = filePathProvider.getFilePath();
   }
 
   @Override
