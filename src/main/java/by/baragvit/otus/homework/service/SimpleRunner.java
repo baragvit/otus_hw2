@@ -3,9 +3,9 @@ package by.baragvit.otus.homework.service;
 import by.baragvit.otus.homework.model.Answer;
 import by.baragvit.otus.homework.model.Question;
 import by.baragvit.otus.homework.model.User;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import by.baragvit.otus.homework.model.VerifiedAnswer;
+import by.baragvit.otus.homework.propertieds.ApplicationProps;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,13 @@ public class SimpleRunner extends Runner {
                       QuestionService questionService,
                       EvaluationService evaluationService,
                       GradeService gradeService,
-                      @Value("${passRate}") double passRate) {
+                      ApplicationProps applicationProps) {
     this.writer = writer;
     this.reader = reader;
     this.questionService = questionService;
     this.evaluationService = evaluationService;
     this.gradeService = gradeService;
-    this.passRate = passRate;
+    this.passRate = applicationProps.passRate();
   }
 
   @Override
@@ -64,14 +64,14 @@ public class SimpleRunner extends Runner {
   @Override
   protected User getUserName() {
     writer.write("Hi, pls enter your surname and name: ");
-    do{
-      String rawName =  reader.read();
+    do {
+      String rawName = reader.read();
       String[] splittedName = rawName.split(" ");
       if (splittedName.length < 2) {
         writer.write("Incorrect name, please, try again: ");
       } else {
         return new User().setFirstName(splittedName[0]).setLastName(splittedName[1]);
       }
-    }while(true);
+    } while (true);
   }
 }
