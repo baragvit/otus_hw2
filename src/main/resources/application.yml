@@ -1,6 +1,6 @@
 questionFilesPath: questions
 passRate: 0.5
-locale: ru_RU
+locale: en
 
 spring:
   messages:

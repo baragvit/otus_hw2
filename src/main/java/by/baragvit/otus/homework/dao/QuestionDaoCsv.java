@@ -8,16 +8,15 @@ import by.baragvit.otus.homework.utils.ReaderProvider;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
-import java.util.Locale;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
+  public static final String QUESTION_PATH_TEMPLATE = "%s/questions_%s.csv";
   private final ReaderProvider readerProvider;
   private final DataParser dataParser;
   private final String filePath;
   private final CsvConverter csvConverter;
-  private final Locale locale;
 
   public QuestionDaoCsv(ApplicationProps applicationProps,
                         ReaderProvider readerProvider,
@@ -26,8 +25,7 @@ public class QuestionDaoCsv implements QuestionDao {
     this.readerProvider = readerProvider;
     this.dataParser = dataParser;
     this.csvConverter = csvConverter;
-    this.locale = applicationProps.locale();
-    this.filePath = String.format("%s/questions_%s.csv", applicationProps.questionFilesPath(), locale.getLanguage());
+    this.filePath = String.format(QUESTION_PATH_TEMPLATE, applicationProps.questionFilesPath(), applicationProps.locale().getLanguage());
   }
 
   @Override

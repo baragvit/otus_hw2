@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleRunner extends Runner {
+  public static final String RESULT_SUCCESS = "result.success";
+  public static final String RESULT_FAILURE = "result.failure";
+  public static final String ANSWER_REQUEST = "answer.request";
+  public static final String HELLO_USER = "hello.user";
+  public static final String INCORRECT_NAME = "incorrect.name";
   private final Writer writer;
   private final Reader reader;
   private final QuestionService questionService;
@@ -43,9 +48,9 @@ public class SimpleRunner extends Runner {
   protected void printResult(boolean hasPass) {
     String result;
     if (hasPass) {
-      result = messageSource.getMessage("result.success", new String[]{}, locale);
+      result = messageSource.getMessage(RESULT_SUCCESS, new String[]{}, locale);
     } else {
-      result = messageSource.getMessage("result.failure", new String[]{}, locale);
+      result = messageSource.getMessage(RESULT_FAILURE, new String[]{}, locale);
     }
     writer.write(String.format("%s\n", result));
   }
@@ -58,7 +63,8 @@ public class SimpleRunner extends Runner {
 
   @Override
   protected List<Answer> getUserAnswers(User user) {
-    writer.write(String.format("%s, please answer the following questions:\n", user.getFirstName()));
+    String answersRequest = messageSource.getMessage(ANSWER_REQUEST, new String[]{user.getFirstName()}, locale);
+    writer.write(String.format("%s\n", answersRequest));
     List<Question> questions = questionService.getQuestions();
     List<Answer> answers = new ArrayList<>();
     for (Question question : questions) {
@@ -71,13 +77,14 @@ public class SimpleRunner extends Runner {
 
   @Override
   protected User getUserName() {
-    String message = messageSource.getMessage("hello.user", new String[]{}, locale);
-    writer.write(message);
+    String helloUserMessage = messageSource.getMessage(HELLO_USER, new String[]{}, locale);
+    writer.write(helloUserMessage);
     do {
       String rawName = reader.read().strip();
       String[] splittedName = rawName.split(" ");
       if (splittedName.length < 2) {
-        writer.write("Incorrect name, please, try again: ");
+        String incorrectNameMessage = messageSource.getMessage(INCORRECT_NAME, new String[]{}, locale);
+        writer.write(String.format("%s ", incorrectNameMessage));
       } else {
         return new User().setFirstName(splittedName[0]).setLastName(splittedName[1]);
       }

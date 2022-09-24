@@ -46,6 +46,8 @@ class RunnerTest {
     ApplicationProps applicationProps = new ApplicationProps("path", 1d, Locale.getDefault());
     when(messageSource.getMessage(eq("hello.user"), any(), any()))
         .thenReturn("Hi, pls enter your surname and name: ");
+    when(messageSource.getMessage(eq("answer.request"), any(), any()))
+        .thenReturn("question answer\n");
     when(messageSource.getMessage(eq("result.success"), any(), any()))
         .thenReturn("Congratulations, you have passed the test\n");
 
