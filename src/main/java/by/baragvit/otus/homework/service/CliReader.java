@@ -1,8 +1,7 @@
 package by.baragvit.otus.homework.service;
 
-import org.springframework.stereotype.Service;
-
 import java.util.Scanner;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CliReader implements Reader {

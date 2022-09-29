@@ -2,9 +2,8 @@ package by.baragvit.otus.homework.service;
 
 import by.baragvit.otus.homework.dao.QuestionDao;
 import by.baragvit.otus.homework.model.Question;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {

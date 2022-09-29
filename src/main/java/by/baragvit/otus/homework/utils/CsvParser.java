@@ -1,12 +1,10 @@
 package by.baragvit.otus.homework.utils;
 
-import com.opencsv.CSVReader;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import by.baragvit.otus.homework.exception.CsvFileException;
-
+import com.opencsv.CSVReader;
 import java.io.Reader;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CsvParser implements DataParser {

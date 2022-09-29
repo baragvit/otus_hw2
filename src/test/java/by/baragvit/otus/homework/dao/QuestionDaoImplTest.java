@@ -2,6 +2,7 @@ package by.baragvit.otus.homework.dao;
 
 import by.baragvit.otus.homework.converter.CsvConverter;
 import by.baragvit.otus.homework.model.Question;
+import by.baragvit.otus.homework.service.FilePathProvider;
 import by.baragvit.otus.homework.utils.CsvParser;
 import by.baragvit.otus.homework.utils.ReaderProvider;
 import java.io.StringReader;
@@ -12,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.Spy;
@@ -27,8 +27,9 @@ class QuestionDaoImplTest {
   private CsvParser csvParser;
   @Spy
   private CsvConverter csvConverter = new CsvConverter();
-  @InjectMocks
-  private QuestionDaoCsv questionDaoCsv;
+  @Mock
+  private FilePathProvider filePathProvider;
+
 
   @Test
   public void getQuestionsFromFile() {
@@ -37,6 +38,7 @@ class QuestionDaoImplTest {
     List<String[]> rows = new ArrayList<>();
     rows.add(row);
     when(csvParser.getLines(any())).thenReturn(rows);
+    QuestionDao questionDaoCsv = new QuestionDaoCsv(filePathProvider, readerProvider, csvParser, csvConverter);
 
     List<Question> questions = questionDaoCsv.getQuestions();
 

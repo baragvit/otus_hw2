@@ -2,14 +2,13 @@ package by.baragvit.otus.homework.dao;
 
 import by.baragvit.otus.homework.converter.CsvConverter;
 import by.baragvit.otus.homework.model.Question;
+import by.baragvit.otus.homework.service.FilePathProvider;
 import by.baragvit.otus.homework.utils.DataParser;
 import by.baragvit.otus.homework.utils.ReaderProvider;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
@@ -18,14 +17,14 @@ public class QuestionDaoCsv implements QuestionDao {
   private final String filePath;
   private final CsvConverter csvConverter;
 
-  public QuestionDaoCsv(@Value("${filePath}") String filePath,
+  public QuestionDaoCsv(FilePathProvider filePathProvider,
                         ReaderProvider readerProvider,
                         DataParser dataParser,
                         CsvConverter csvConverter) {
     this.readerProvider = readerProvider;
-    this.filePath = filePath;
     this.dataParser = dataParser;
     this.csvConverter = csvConverter;
+    this.filePath = filePathProvider.getFilePath();
   }
 
   @Override

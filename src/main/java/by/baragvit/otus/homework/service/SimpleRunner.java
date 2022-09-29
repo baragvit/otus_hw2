@@ -3,43 +3,44 @@ package by.baragvit.otus.homework.service;
 import by.baragvit.otus.homework.model.Answer;
 import by.baragvit.otus.homework.model.Question;
 import by.baragvit.otus.homework.model.User;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import by.baragvit.otus.homework.model.VerifiedAnswer;
-
+import by.baragvit.otus.homework.propertieds.ApplicationProps;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleRunner extends Runner {
-  private final Writer writer;
-  private final Reader reader;
+  private final IOService ioService;
   private final QuestionService questionService;
   private final EvaluationService evaluationService;
   private final GradeService gradeService;
   private final double passRate;
+  private final MessageProvider messageProvider;
 
-  public SimpleRunner(Writer writer,
-                      Reader reader,
+  public SimpleRunner(IOService ioService,
                       QuestionService questionService,
                       EvaluationService evaluationService,
                       GradeService gradeService,
-                      @Value("${passRate}") double passRate) {
-    this.writer = writer;
-    this.reader = reader;
+                      ApplicationProps applicationProps,
+                      MessageProvider messageProvider) {
+    this.ioService = ioService;
     this.questionService = questionService;
     this.evaluationService = evaluationService;
     this.gradeService = gradeService;
-    this.passRate = passRate;
+    this.passRate = applicationProps.passRate();
+    this.messageProvider = messageProvider;
   }
 
   @Override
   protected void printResult(boolean hasPass) {
+    String result;
     if (hasPass) {
-      writer.write("Congratulations, you have passed the test\n");
+      result = messageProvider.getCongrat();
     } else {
-      writer.write("Sorry, you have failed the test\n");
+      result = messageProvider.getFailure();
     }
+    ioService.write(String.format("%s\n", result));
   }
 
   @Override
@@ -50,12 +51,13 @@ public class SimpleRunner extends Runner {
 
   @Override
   protected List<Answer> getUserAnswers(User user) {
-    writer.write(String.format("%s, please answer the following questions:\n", user.getFirstName()));
+    String answersRequest = messageProvider.getQuestionsRequest(user.getFirstName());
+    ioService.write(String.format("%s\n", answersRequest));
     List<Question> questions = questionService.getQuestions();
     List<Answer> answers = new ArrayList<>();
     for (Question question : questions) {
-      writer.write(String.format("---> %s: ", question.getQuestionText()));
-      String answer = reader.read();
+      ioService.write(String.format("---> %s: ", question.getQuestionText()));
+      String answer = ioService.read();
       answers.add(new Answer(question, answer));
     }
     return answers;
@@ -63,15 +65,17 @@ public class SimpleRunner extends Runner {
 
   @Override
   protected User getUserName() {
-    writer.write("Hi, pls enter your surname and name: ");
-    do{
-      String rawName =  reader.read();
+    String helloUserMessage = messageProvider.getUserName();
+    ioService.write(helloUserMessage);
+    do {
+      String rawName = ioService.read().strip();
       String[] splittedName = rawName.split(" ");
       if (splittedName.length < 2) {
-        writer.write("Incorrect name, please, try again: ");
+        String incorrectNameMessage = messageProvider.getUserNameRepeatedly();
+        ioService.write(String.format("%s ", incorrectNameMessage));
       } else {
         return new User().setFirstName(splittedName[0]).setLastName(splittedName[1]);
       }
-    }while(true);
+    } while (true);
   }
 }

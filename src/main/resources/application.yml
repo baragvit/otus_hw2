@@ -1,0 +1,7 @@
+questionFilesPath: questions
+passRate: 0.5
+locale: en
+
+spring:
+  messages:
+    basename: "i18n/appmessages"

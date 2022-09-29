@@ -1,7 +1,6 @@
 package by.baragvit.otus.homework.service;
 
 import by.baragvit.otus.homework.model.Answer;
-
 import by.baragvit.otus.homework.model.User;
 import java.util.List;
 
